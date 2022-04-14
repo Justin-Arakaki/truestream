@@ -6,55 +6,25 @@ title: "Feature: User can "
 
 ## ⚙️ Feature
 
-> ##### What capability will users have when this feature is merged?
-
-<!-- write your feature below this line, i.e. "User can..." -->
 
 ## 📐 Functionality
 
-> ##### A description of how the application will work from the perspective of the user.
-
-<!-- write your plan below this line -->
 
 ## 🖼️ Wireframes
 
-> ##### Wireframe screenshot(s) of what the app should look like when it is complete.
-
-<!-- drag and drop your screenshots below this line -->
 
 ## ✅ Task List
 
-> ##### Commit checklist for tasks needed to complete the feature.
-
 ### 🐘 Database
-
-<!-- add as many items as you need -->
-<!-- delete this section if not applicable -->
-
-- [ ] Update `schema.sql` to ...
-- [ ] Update `data.sql` to ...
+- [ ] 
 
 ### ☁️ Server
-
-<!-- add as many items as you need -->
-<!-- delete this section if not applicable -->
-
-- [ ] Update `server/index.js` to ...
-- [ ] Test with HTTPie
-- [ ] Handle all errors and respond to the client
+- [ ] 
 
 ### ⚡ Client
-
-<!-- add as many items as you need -->
-<!-- delete this section if not applicable -->
-
-- [ ] Create a component to ...
-- [ ] Update component to ...
+- [ ] 
 
 ### 🧑‍⚕️ Clean Up
-
-- [ ] ... <!-- add as many items as you need -->
-- [ ] ...
 - [ ] Make sure that no React state objects are being mutated.
 - [ ] Make sure that no event listeners are manipulating the DOM directly.
 - [ ] Make sure that click targets are either `<a>` or `<button>` elements.
