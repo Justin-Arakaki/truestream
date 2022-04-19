@@ -1,5 +1,6 @@
-const ClientError = require('../middlewares/client-error');
 const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
+const ClientError = require('../middlewares/client-error');
 
 function Checkfields(username, password) {
   if (!username || !password) {
@@ -24,25 +25,6 @@ function checkUsernameTaken(username, db) {
     });
 }
 
-function checkPassword(username, password, db) {
-  const sql = `
-    select "userId",
-           "hashedPassword"
-      from "users"
-     where "username" = $1
-  `;
-  const params = [username];
-
-  return db.query(sql, params)
-    .then(result => {
-      const [user] = result.rows;
-      if (!user) {
-        throw new ClientError(401, 'invalid login');
-      }
-      return user;
-    });
-}
-
 function addUser(username, password, db) {
   return argon2
     .hash(password)
@@ -54,10 +36,47 @@ function addUser(username, password, db) {
       `;
       const params = [username, hashedPassword];
       return db.query(sql, params);
+    })
+    .then(result => {
+      const [user] = result.rows;
+      return user;
     });
+}
+
+function checkPassword(username, password, db) {
+  const sql = `
+    select
+      "userId",
+      "hashedPassword"
+    from "users"
+    where "username" = $1
+  `;
+  const params = [username];
+
+  return db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      if (!user) {
+        throw new ClientError(401, 'invalid login');
+      }
+      return argon2
+        .verify(user.hashedPassword, password)
+        .then(isMatching => {
+          if (!isMatching) {
+            throw new ClientError(401, 'invalid login');
+          }
+          return user;
+        });
+    });
+}
+
+function createToken(payload) {
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+  return token;
 }
 
 exports.checkFields = Checkfields;
 exports.checkUsernameTaken = checkUsernameTaken;
-exports.checkPassword = checkPassword;
 exports.addUser = addUser;
+exports.checkPassword = checkPassword;
+exports.createToken = createToken;
