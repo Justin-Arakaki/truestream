@@ -7,7 +7,9 @@ function authorizationMiddleware(req, res, next) {
     throw new ClientError(401, 'authentication required');
   }
   jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
-    if (err) throw err;
+    if (err) {
+      throw new ClientError(401, 'authentication failed');
+    }
     req.user = payload;
     next();
   });
