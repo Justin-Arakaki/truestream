@@ -2,7 +2,7 @@ const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const ClientError = require('../middlewares/client-error');
 
-function Checkfields(username, password) {
+function checkParams(username, password) {
   if (!username || !password) {
     throw new ClientError(400, 'username and password are required fields');
   }
@@ -25,7 +25,7 @@ function checkUsernameTaken(username, db) {
     });
 }
 
-function addUser(username, password, db) {
+function add(username, password, db) {
   return argon2
     .hash(password)
     .then(hashedPassword => {
@@ -75,8 +75,8 @@ function createToken(payload) {
   return token;
 }
 
-exports.checkFields = Checkfields;
+exports.checkParams = checkParams;
 exports.checkUsernameTaken = checkUsernameTaken;
-exports.addUser = addUser;
+exports.add = add;
 exports.checkPassword = checkPassword;
 exports.createToken = createToken;

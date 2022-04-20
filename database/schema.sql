@@ -19,10 +19,12 @@ create table "public"."subscriptions" (
   "subscriptionId" serial,
   "userId" integer not null,
   "serviceName" text not null,
+  "isActive" boolean not null default true,
   "cost" float not null,
   "billingCycle" text not null,
   "cycleStart" date not null,
   "photoUrl" text not null,
   "createdAt" timestamptz(6) not null default now(),
+  "updatedAt" timestamptz(6) not null default now(),
   primary key ("subscriptionId")
 );
