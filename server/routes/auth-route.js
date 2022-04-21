@@ -9,8 +9,8 @@ const router = express.Router();
 router.post('/sign-up', (req, res, next) => {
   const { username, password } = req.body;
 
-  userTable.checkParams(username, password);
-  userTable.checkUsernameTaken(username, db)
+  userTable.isParamsValid(username, password);
+  userTable.isUsernameTaken(username, db)
     .then(() => userTable.add(username, password, db))
     .then(user => res.status(201).json(user))
     .catch(err => next(err));
@@ -20,8 +20,8 @@ router.post('/sign-up', (req, res, next) => {
 router.post('/sign-in', (req, res, next) => {
   const { username, password } = req.body;
 
-  userTable.checkParams(username, password);
-  userTable.checkPassword(username, password, db)
+  userTable.isParamsValid(username, password);
+  userTable.isPasswordCorrect(username, password, db)
     .then(user => {
       const payload = { userId: user.userId, username };
       const token = userTable.createToken(payload);

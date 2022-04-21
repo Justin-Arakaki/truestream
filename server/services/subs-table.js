@@ -16,7 +16,8 @@ function getAll(userId, db) {
     });
 }
 
-function add(reqParams, db) {
+function add(userId, reqParams, db) {
+  reqParams.userId = userId;
   const paramNames = [
     'userId',
     'serviceName',
@@ -25,13 +26,15 @@ function add(reqParams, db) {
     'cycleStart',
     'photoUrl'
   ];
-  const paramValues = paramNames.map(x => reqParams[x]);
+  const numParams = paramNames.length;
+  const params = createParams(paramNames, reqParams);
+  const colString = createColString(paramNames);
+  const varString = createVarString(1, numParams);
   const sql = `
-    insert into "subscriptions" ($1, $2, $3, $4, $5, $6)
-    values ($7, $8, $9, $10, $11, $12)
+    insert into "subscriptions" (${colString})
+    values (${varString})
     returning *
   `;
-  const params = [...paramNames, ...paramValues];
 
   return db.query(sql, params)
     .then(result => {
@@ -40,16 +43,27 @@ function add(reqParams, db) {
     });
 }
 
-function updateIsActive(subscriptionId, isActive, db) {
+function update(userId, subscriptionId, reqParams, db) {
+  const updateableParams = [
+    'serviceName',
+    'isActive',
+    'cost',
+    'billingCycle',
+    'cycleStart',
+    'photoUrl'
+  ];
+  const paramNames = updateableParams.filter(x => x in reqParams);
+  const params = createParams(paramNames, reqParams);
+  const setString = createSetString(paramNames);
   const sql = `
     update "subscriptions"
     set
       "updatedAt" = now(),
-      "isActive" = $1
-    where "subscriptionId" = $2
+      ${setString}
+    where "userId" = ${userId}
+    and "subscriptionId" = ${subscriptionId}
     returning *
   `;
-  const params = [isActive, subscriptionId];
 
   return db.query(sql, params)
     .then(result => {
@@ -63,8 +77,9 @@ function updateIsActive(subscriptionId, isActive, db) {
     });
 }
 
-function checkParams(reqParams, checkArray) {
+function isParamsValid(reqParams, checkArray) {
   const exampleParams = {
+    userId: 3,
     subscriptionId: 4,
     serviceName: 'Netflix',
     isActive: true,
@@ -74,15 +89,50 @@ function checkParams(reqParams, checkArray) {
     cycleStart: '2022-04-14'
   };
   for (const x of checkArray) {
-    if (!reqParams[x] || typeof reqParams[x] !== typeof exampleParams[x]) {
-      const errorMsg =
-        `${x} (${exampleParams[x]}) is a required field`;
+    if (
+      typeof reqParams[x] === 'undefined' ||
+      typeof reqParams[x] !== typeof exampleParams[x]
+    ) {
+      const errorMsg = `${x} (${typeof exampleParams[x]}) is a required field`;
       throw new ClientError(400, errorMsg);
     }
   }
 }
 
+// Private Helpers //
+
+function createParams(paramNames, reqParams) {
+  const params = paramNames.map(x => reqParams[x]);
+  return params;
+}
+
+function createVarString(startNum, length) {
+  let varString = '';
+  for (let i = startNum; i <= length; i++) {
+    varString += '$' + i;
+    if (i < length) {
+      varString += ', ';
+    }
+  }
+  return varString;
+}
+
+function createColString(paramNames) {
+  const formatted = paramNames.map(x => `"${x}"`);
+  const colString = formatted.join(', ');
+  return colString;
+}
+
+function createSetString(paramNames) {
+  const formatted = paramNames.map(x => `"${x}" = $`);
+  for (let i = 1; i <= formatted.length; i++) {
+    formatted[i - 1] += i;
+  }
+  const setString = formatted.join(',\n      ');
+  return setString;
+}
+
 exports.getAll = getAll;
 exports.add = add;
-exports.updateIsActive = updateIsActive;
-exports.checkParams = checkParams;
+exports.isParamsValid = isParamsValid;
+exports.update = update;

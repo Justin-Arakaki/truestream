@@ -13,39 +13,38 @@ router.get('', (req, res, next) => {
   const { userId } = req.user;
 
   subsTable.getAll(userId, db)
-    .then(subs => res.status(200).json(subs))
+    .then(subs => res.json(subs))
     .catch(err => next(err));
 });
 
 // Add new subscription
 router.post('', (req, res, next) => {
-  const reqParams = req.body;
+  const reqParams = JSON.parse(JSON.stringify(req.body));
   const checked = [
     'serviceName',
-    'isActive',
     'cost',
     'billingCycle',
-    'cycleStart'
+    'cycleStart',
+    'photoUrl'
   ];
+  const { userId } = req.user;
 
-  subsTable.checkReqParamsIsValid(reqParams, checked);
-  subsTable.add(reqParams, db)
+  subsTable.isParamsValid(reqParams, checked);
+  subsTable.add(userId, reqParams, db)
     .then(subscription => res.status(201).json(subscription))
     .catch(err => next(err));
 });
 
-// Update subscription
+// Update user's subscription
 router.patch('/:subscriptionId', (req, res, next) => {
   const subscriptionId = Number(req.params.subscriptionId);
-  const { isActive } = req.body;
-  const params = {
-    subscriptionId: subscriptionId,
-    isActive: isActive
-  };
-  const checked = ['subscriptionId', 'isActive'];
+  const reqParams = JSON.parse(JSON.stringify(req.body));
+  const paramNames = Object.keys(reqParams);
+  const checked = [...paramNames];
+  const { userId } = req.user;
 
-  subsTable.checkParams(params, checked);
-  subsTable.updateIsActive(subscriptionId, isActive, db)
+  subsTable.isParamsValid(reqParams, checked);
+  subsTable.update(userId, subscriptionId, reqParams, db)
     .then(subs => res.json(subs))
     .catch(err => next(err));
 });
