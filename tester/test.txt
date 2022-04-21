@@ -33,7 +33,7 @@ result:
     }
 ]
 
-http -v patch :3000/api/subscriptions/1 x-access-token:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJpYXQiOjE2NTAzNDkyODB9.H4MaoV9B_FbJoBrIF3OP_z9AtRWc2v3KlgmFNgjHB90' isActive:=true
+http -v patch :3000/api/subscriptions/1 x-access-token: isActive:=true
 result:
 [
     {
@@ -49,3 +49,14 @@ result:
         "userId": 1
     }
 ]
+
+http -v post :3000/api/subscriptions x-access-token: serviceName=NewNetflix cost:=10.44 billingCycle=monthly cycleStart='2022-04-20' photoUrl='https://cdn.watchmode.com/provider_logos/netflix_100px.png' isActive:=true
+result:
+{
+    "billingCycle": "monthly",
+    "cost": 10.44,
+    "cycleStart": "2022-04-20",
+    "isActive": true,
+    "photoUrl": "https://cdn.watchmode.com/provider_logos/netflix_100px.png",
+    "serviceName": "NewNetflix"
+}
