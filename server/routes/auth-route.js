@@ -26,7 +26,7 @@ router.post('/sign-in', (req, res, next) => {
       const payload = { userId: user.userId, username };
       const token = userTable.createToken(payload);
 
-      res.status(200).json({ token, user: payload });
+      res.json({ user: payload, token });
     })
     .catch(err => next(err));
 });
