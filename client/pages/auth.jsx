@@ -10,7 +10,8 @@ export default class AuthPage extends React.Component {
 
     const { user, handleSignIn } = this.context;
 
-    if (user) return <Redirect to="subscriptions" />;
+    if (user) return <Redirect to="dashboard" />;
+
     return (
       <>
         <Banner />

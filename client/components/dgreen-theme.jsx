@@ -1,6 +1,15 @@
 import { createTheme } from '@mui/material/styles';
 
 const dgreenTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 500,
+      md: 900,
+      lg: 1200,
+      xl: 1536
+    }
+  },
   palette: {
     primary: {
       main: '#1EA54C'
@@ -41,6 +50,11 @@ const dgreenTheme = createTheme({
       fontSize: '1.175rem'
     },
     body1: {
+      fontFamily: 'Roboto',
+      fontWeight: 500,
+      fontSize: '1.125rem'
+    },
+    body2: {
       fontFamily: 'Roboto',
       fontWeight: 400,
       fontSize: '1rem'
