@@ -134,5 +134,5 @@ function createSetString(paramNames) {
 
 exports.getAll = getAll;
 exports.add = add;
-exports.isParamsValid = isParamsValid;
 exports.update = update;
+exports.isParamsValid = isParamsValid;

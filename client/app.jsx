@@ -5,9 +5,8 @@ import decodeToken from './lib/decode-token';
 import AppContext from './lib/app-context';
 // Import Pages
 import Auth from './pages/auth';
-import Subscriptions from './pages/subscriptions';
+import Dashboard from './pages/dashboard';
 import NotFound from './pages/not-found';
-import Home from './pages/home';
 // Import MUI
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -54,10 +53,10 @@ export default class App extends React.Component {
     switch (path) {
       case 'login':
         return <Auth />;
-      case 'subscriptions':
-        return <Subscriptions />;
+      case 'dashboard':
+        return <Dashboard />;
       default:
-        return <Home />;
+        return <Dashboard />;
     }
   }
 
