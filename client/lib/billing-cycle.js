@@ -14,10 +14,10 @@ export default class BillingCycle {
   }
 
   get daysUntilPayment() {
-    return Math.floor(this.daysElapsed % this.length);
+    return this.length - Math.floor(this.daysElapsed % this.length);
   }
 
   get progress() {
-    return (this.daysUntilPayment / this.length) * 100;
+    return 100 - (this.daysUntilPayment / this.length) * 100;
   }
 }

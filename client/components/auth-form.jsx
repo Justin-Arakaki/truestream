@@ -1,5 +1,13 @@
 import React from 'react';
-import { Typography, Container, Paper, Box, Button, Tab, Tabs, TextField } from '@mui/material';
+// Import MUI
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import TextField from '@mui/material/TextField';
 
 export default class AuthForm extends React.Component {
   constructor(props) {
@@ -90,7 +98,6 @@ export default class AuthForm extends React.Component {
               required
               fullWidth
               variant="standard"
-              color="secondary"
               id="username"
               label="Username"
               name="username"

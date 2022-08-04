@@ -1,6 +1,6 @@
 insert into "users" (
   "username",
-  "hashedPassword"
+  "hashed_password"
 )
 values (
   'testuser',
@@ -10,13 +10,13 @@ values (
 -- username: testuser, password: password
 
 insert into "subscriptions" (
-  "serviceName",
-  "isActive",
+  "service_name",
+  "is_active",
   "cost",
-  "billingCycle",
-  "cycleStart",
-  "photoUrl",
-  "userId"
+  "billing_cycle",
+  "cycle_start",
+  "photo_url",
+  "user_id"
 )
 values (
   'Netflix',
@@ -29,13 +29,13 @@ values (
 );
 
 insert into "subscriptions" (
-  "serviceName",
-  "isActive",
+  "service_name",
+  "is_active",
   "cost",
-  "billingCycle",
-  "cycleStart",
-  "photoUrl",
-  "userId"
+  "billing_cycle",
+  "cycle_start",
+  "photo_url",
+  "user_id"
 )
 values (
   'Hulu',

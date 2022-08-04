@@ -1,6 +1,7 @@
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const ClientError = require('../middlewares/client-error');
+const { usersColumn } = require('../../database/usersdb-info');
 
 function isParamsValid(username, password) {
   if (!username || !password) {
@@ -12,7 +13,7 @@ function isUsernameTaken(username, db) {
   const sql = `
     select 1
     from "users"
-    where "username" = $1
+    where ${usersColumn.username} = $1
   `;
   const params = [username];
 
@@ -30,15 +31,26 @@ function add(username, password, db) {
     .hash(password)
     .then(hashedPassword => {
       const sql = `
-        insert into "users" ("username", "hashedPassword")
+        insert into "users" (
+          ${usersColumn.username},
+          ${usersColumn.hashedPassword}
+        )
         values ($1, $2)
-        returning "userId", "username", "createdAt"
+        returning
+          ${usersColumn.userId},
+          ${usersColumn.username},
+          ${usersColumn.createdAt}
       `;
       const params = [username, hashedPassword];
       return db.query(sql, params);
     })
     .then(result => {
-      const [user] = result.rows;
+      const [userInfo] = result.rows;
+      const user = {
+        userId: userInfo[usersColumn.userId],
+        username: userInfo[usersColumn.username],
+        createdAt: userInfo[usersColumn.createdAt]
+      };
       return user;
     });
 }
@@ -46,16 +58,20 @@ function add(username, password, db) {
 function isPasswordCorrect(username, password, db) {
   const sql = `
     select
-      "userId",
-      "hashedPassword"
+      ${usersColumn.userId},
+      ${usersColumn.hashedPassword}
     from "users"
-    where "username" = $1
+    where ${usersColumn.username} = $1
   `;
   const params = [username];
 
   return db.query(sql, params)
     .then(result => {
-      const [user] = result.rows;
+      const [userInfo] = result.rows;
+      const user = {
+        userId: userInfo[usersColumn.userId],
+        hashedPassword: userInfo[usersColumn.hashedPassword]
+      };
       if (!user) {
         throw new ClientError(401, 'invalid login');
       }

@@ -7,24 +7,24 @@ drop schema "public" cascade;
 create schema "public";
 
 create table "public"."users" (
-  "userId" serial,
+  "user_id" serial,
   "username" text not null,
-  "hashedPassword" text not null,
-  "createdAt" timestamptz(6) not null default now(),
-  primary key ("userId"),
+  "hashed_password" text not null,
+  "created_at" timestamptz(6) not null default now(),
+  primary key ("user_id"),
   unique ("username")
 );
 
 create table "public"."subscriptions" (
-  "subscriptionId" serial,
-  "userId" integer not null,
-  "serviceName" text not null,
-  "isActive" boolean not null default true,
+  "subscription_id" serial,
+  "user_id" integer not null,
+  "service_name" text not null,
+  "is_active" boolean not null default true,
   "cost" float not null,
-  "billingCycle" text not null,
-  "cycleStart" date not null,
-  "photoUrl" text not null,
-  "createdAt" timestamptz(6) not null default now(),
-  "updatedAt" timestamptz(6) not null default now(),
-  primary key ("subscriptionId")
+  "billing_cycle" text not null,
+  "cycle_start" date not null,
+  "photo_url" text not null,
+  "created_at" timestamptz(6) not null default now(),
+  "updated_at" timestamptz(6) not null default now(),
+  primary key ("subscription_id")
 );
