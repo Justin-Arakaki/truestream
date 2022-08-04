@@ -2,7 +2,9 @@ import React from 'react';
 import Redirect from './redirect';
 import SubsItem from './subs-item';
 import AppContext from '../lib/app-context';
-import { Typography, Card, Stack } from '@mui/material';
+import LoadingScreen from './loading-screen';
+// Import MUI
+import Stack from '@mui/material/Stack';
 
 export default class Subscriptions extends React.Component {
   constructor(props) {
@@ -35,18 +37,16 @@ export default class Subscriptions extends React.Component {
   }
 
   render() {
-    console.log('INSIDE SUBS');
     const { user } = this.context;
     const { subscriptions, loading } = this.state;
     if (loading) {
-      return <Typography>Sad face</Typography>;
+      return <LoadingScreen />;
     }
     const subsList = subscriptions.map(x =>
       <SubsItem key={x.subscriptionId} subsInfo={x} />
     );
     if (!user) return <Redirect to="login" />;
 
-    // TODO subs-item
     return (
       <Stack spacing={1} sx={{ width: '100%' }}>
         {subsList}

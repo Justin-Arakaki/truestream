@@ -48,5 +48,4 @@ router.patch('/:subscriptionId', (req, res, next) => {
     .then(subs => res.json(subs))
     .catch(err => next(err));
 });
-
 module.exports = router;

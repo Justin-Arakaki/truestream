@@ -2,7 +2,9 @@ import React from 'react';
 import Redirect from '../components/redirect';
 import Subscriptions from '../components/subscriptions';
 import AppContext from '../lib/app-context';
-import { Grid, Container } from '@mui/material';
+// Import MUI
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 
 export default class Dashboard extends React.Component {
   constructor(props) {
@@ -21,12 +23,10 @@ export default class Dashboard extends React.Component {
   }
 
   render() {
-    console.log('INSIDE DASHBOARD');
-    const { user, handleSignIn } = this.context;
+    const { user } = this.context;
 
     if (!user) return <Redirect to="login" />;
 
-    // TODO: Contains CustyAppBar, Content
     return (
       <Container maxWidth="sm">
         <Grid container mt={2} spacing={1}>
