@@ -18,12 +18,11 @@ create table "public"."users" (
 create table "public"."subscriptions" (
   "subscription_id" serial,
   "user_id" integer not null,
-  "service_name" text not null,
+  "service_id" integer not null,
   "is_active" boolean not null default true,
   "cost" float not null,
   "billing_cycle" text not null,
   "cycle_start" date not null,
-  "photo_url" text not null,
   "created_at" timestamptz(6) not null default now(),
   "updated_at" timestamptz(6) not null default now(),
   primary key ("subscription_id")

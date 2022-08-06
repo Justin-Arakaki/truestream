@@ -5,4 +5,4 @@ set -e
 # shellcheck source=/dev/null
 test -f .env && . .env
 
-psql "$DATABASE_URL" -f database/schema.sql -f database/data.sql -f database/watchmode_sources.sql
+psql "$DATABASE_URL" -f database/schema.sql -f database/data.sql -f database/services-table.sql

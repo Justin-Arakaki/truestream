@@ -32,25 +32,20 @@ function add(username, password, db) {
     .then(hashedPassword => {
       const sql = `
         insert into "users" (
-          ${usersColumn.username},
-          ${usersColumn.hashedPassword}
+          "${usersColumn.username}",
+          "${usersColumn.hashedPassword}"
         )
         values ($1, $2)
         returning
-          ${usersColumn.userId},
-          ${usersColumn.username},
-          ${usersColumn.createdAt}
+          "${usersColumn.userId}" as "userId",
+          "${usersColumn.username}" as "username",
+          "${usersColumn.createdAt}" as "createdAt"
       `;
       const params = [username, hashedPassword];
       return db.query(sql, params);
     })
     .then(result => {
-      const [userInfo] = result.rows;
-      const user = {
-        userId: userInfo[usersColumn.userId],
-        username: userInfo[usersColumn.username],
-        createdAt: userInfo[usersColumn.createdAt]
-      };
+      const [user] = result.rows;
       return user;
     });
 }
@@ -58,20 +53,16 @@ function add(username, password, db) {
 function isPasswordCorrect(username, password, db) {
   const sql = `
     select
-      ${usersColumn.userId},
-      ${usersColumn.hashedPassword}
+      "${usersColumn.userId}" as "userId",
+      "${usersColumn.hashedPassword}" as "hashedPassword"
     from "users"
-    where ${usersColumn.username} = $1
+    where "${usersColumn.username}" = $1
   `;
   const params = [username];
 
   return db.query(sql, params)
     .then(result => {
-      const [userInfo] = result.rows;
-      const user = {
-        userId: userInfo[usersColumn.userId],
-        hashedPassword: userInfo[usersColumn.hashedPassword]
-      };
+      const [user] = result.rows;
       if (!user) {
         throw new ClientError(401, 'invalid login');
       }

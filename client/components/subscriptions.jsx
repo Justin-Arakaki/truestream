@@ -43,7 +43,7 @@ export default class Subscriptions extends React.Component {
       return <LoadingScreen />;
     }
     const subsList = subscriptions.map(x =>
-      <SubsItem key={x.subscriptionId} subsInfo={x} />
+      <SubsItem key={x.subsId} subsInfo={x} />
     );
     if (!user) return <Redirect to="login" />;
 
