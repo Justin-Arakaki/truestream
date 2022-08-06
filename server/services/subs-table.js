@@ -1,10 +1,22 @@
 const ClientError = require('../middlewares/client-error');
+const { subsColumn } = require('../../database/subscriptionsdb-info');
+const { servicesColumn } = require('../../database/servicesdb-info');
 
 function getAll(userId, db) {
   const sql = `
-    select *
-    from "subscriptions"
-    where "userId" = $1
+    select
+      "subs"."${subsColumn.subsId}" as "subsId",
+      "subs"."${subsColumn.userId}" as "userId",
+      "subs"."${subsColumn.serviceId}" as "serviceId",
+      "subs"."${subsColumn.isActive}" as "isActive",
+      "subs"."${subsColumn.cost}" as "cost",
+      "subs"."${subsColumn.billingCycle}" as "billingCycle",
+      "subs"."${subsColumn.cycleStart}" as "cycleStart",
+      "serv"."${servicesColumn.serviceName}" as "serviceName",
+      "serv"."${servicesColumn.serviceLogo}" as "serviceLogo"
+    from "subscriptions" as "subs"
+    join "services" as "serv" using ("${servicesColumn.serviceId}")
+    where "${subsColumn.userId}" = $1
     order by "serviceName"
   `;
   const params = [userId];
@@ -17,24 +29,25 @@ function getAll(userId, db) {
 }
 
 function add(userId, reqParams, db) {
-  reqParams.userId = userId;
-  const paramNames = [
-    'userId',
-    'serviceName',
-    'cost',
-    'billingCycle',
-    'cycleStart',
-    'photoUrl'
-  ];
-  const numParams = paramNames.length;
-  const params = createParams(paramNames, reqParams);
-  const colString = createColString(paramNames);
-  const varString = createVarString(1, numParams);
+  const varString = createVarString(1, 5);
   const sql = `
-    insert into "subscriptions" (${colString})
+    insert into "subscriptions" (
+      "${subsColumn.userId}",
+      "${subsColumn.serviceId}",
+      "${subsColumn.cost}",
+      "${subsColumn.billingCycle}",
+      "${subsColumn.cycleStart}"
+    )
     values (${varString})
     returning *
   `;
+  const params = [
+    userId,
+    reqParams.serviceId,
+    reqParams.cost,
+    reqParams.billingCycle,
+    reqParams.cycleStart
+  ];
 
   return db.query(sql, params)
     .then(result => {
@@ -43,34 +56,44 @@ function add(userId, reqParams, db) {
     });
 }
 
-function update(userId, subscriptionId, reqParams, db) {
-  const updateableParams = [
-    'serviceName',
-    'isActive',
-    'cost',
-    'billingCycle',
-    'cycleStart',
-    'photoUrl'
-  ];
-  const paramNames = updateableParams.filter(x => x in reqParams);
-  const params = createParams(paramNames, reqParams);
-  const setString = createSetString(paramNames);
+function update(userId, subsId, reqParams, db) {
   const sql = `
     update "subscriptions"
     set
-      "updatedAt" = now(),
-      ${setString}
-    where "userId" = ${userId}
-    and "subscriptionId" = ${subscriptionId}
-    returning *
+      "${subsColumn.updatedAt}" = now(),
+      "${subsColumn.serviceId}" = $3,
+      "${subsColumn.isActive}" = $4,
+      "${subsColumn.cost}" = $5,
+      "${subsColumn.billingCycle}" = $6,
+      "${subsColumn.cycleStart}" = $7
+    where "${subsColumn.userId}" = $1
+    and "${subsColumn.subsId}" = $2
+    returning
+      "${subsColumn.subsId}" as "subsId",
+      "${subsColumn.userId}" as "userId",
+      "${subsColumn.serviceId}" as "serviceId",
+      "${subsColumn.isActive}" as "isActive",
+      "${subsColumn.cost}" as "cost",
+      "${subsColumn.billingCycle}" as "billingCycle",
+      "${subsColumn.cycleStart}" as "cycleStart",
+      "${subsColumn.updatedAt}" as "updatedAt"
   `;
+  const params = [
+    userId,
+    subsId,
+    reqParams.serviceId,
+    reqParams.isActive,
+    reqParams.cost,
+    reqParams.billingCycle,
+    reqParams.cycleStart
+  ];
 
   return db.query(sql, params)
     .then(result => {
       const subs = result.rows;
       if (!subs) {
         const errorMsg =
-          `cannot find subscription with subscriptionId ${subscriptionId}`;
+          `cannot find subscription with subscriptionId ${subsId}`;
         throw new ClientError(404, errorMsg);
       }
       return subs;
@@ -79,13 +102,12 @@ function update(userId, subscriptionId, reqParams, db) {
 
 function isParamsValid(reqParams, checkArray) {
   const exampleParams = {
-    userId: 3,
-    subscriptionId: 4,
-    serviceName: 'Netflix',
+    subsId: 3,
+    userId: 1,
+    serviceId: 203,
     isActive: true,
     cost: 10.99,
     billingCycle: 'monthly',
-    photoUrl: 'https://cdn.watchmode.com/provider_logos/netflix_100px.png',
     cycleStart: '2022-04-14'
   };
   for (const x of checkArray) {
@@ -101,11 +123,6 @@ function isParamsValid(reqParams, checkArray) {
 
 // Private Helpers //
 
-function createParams(paramNames, reqParams) {
-  const params = paramNames.map(x => reqParams[x]);
-  return params;
-}
-
 function createVarString(startNum, length) {
   let varString = '';
   for (let i = startNum; i <= length; i++) {
@@ -115,21 +132,6 @@ function createVarString(startNum, length) {
     }
   }
   return varString;
-}
-
-function createColString(paramNames) {
-  const formatted = paramNames.map(x => `"${x}"`);
-  const colString = formatted.join(', ');
-  return colString;
-}
-
-function createSetString(paramNames) {
-  const formatted = paramNames.map(x => `"${x}" = $`);
-  for (let i = 1; i <= formatted.length; i++) {
-    formatted[i - 1] += i;
-  }
-  const setString = formatted.join(',\n      ');
-  return setString;
 }
 
 exports.getAll = getAll;

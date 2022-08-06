@@ -20,7 +20,7 @@ export default function SubsItem(props) {
     cycleStart,
     cost,
     isActive,
-    photoUrl,
+    serviceLogo,
     serviceName
   } = props.subsInfo;
   const cycle = new BillingCycle(cycleStart, billingCycle);
@@ -35,7 +35,7 @@ export default function SubsItem(props) {
         <Card sx={{ p: 2, display: 'flex', gap: 2 }}>
           <Avatar
             alt={serviceName}
-            src={photoUrl}
+            src={serviceLogo}
             sx={{ height: '3rem', width: '3rem' }}
           />
           <Box width="100%">

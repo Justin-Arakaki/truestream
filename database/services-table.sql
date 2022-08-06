@@ -1,6 +1,6 @@
-DROP TABLE watchmode_sources;
+DROP TABLE IF EXISTS "services";
 
-CREATE TABLE IF NOT EXISTS "watchmode_sources" (
+CREATE TABLE IF NOT EXISTS "services" (
 "service_id" INT,
 "service_name" TEXT,
 "service_type" TEXT,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "watchmode_sources" (
 "regions" TEXT[]
 );
 
-INSERT INTO watchmode_sources VALUES
+INSERT INTO services VALUES
 (203,'Netflix','sub','https://cdn.watchmode.com/provider_logos/netflix_100px.png','http://itunes.apple.com/app/netflix/id363590051','https://play.google.com/store/apps/details?id=com.netflix.mediaclient&hl=en','nflx','nflx','{"US","CA","GB","AU","BR","AR","BE","BG","CH","CL","CO","CZ","DE","DK","EC","EE","ES","FI","FR","GR","HK","HR","HU","ID","IE","IL","IN","IS","JP","KR","LT","MX","MY","NL","NO","NZ","PA","PE","PH","PL","PT","RO","RS","RU","SE","SG","TH","TR","UA","VN","ZA","ar","ch","cl","co","ec","ee","fr","gr","id","jp","kr","lt","mx","my","pe","ph","sg","th","tr","vn","za"}'),
 (157,'Hulu','sub','https://cdn.watchmode.com/provider_logos/hulu_100px.png','http://itunes.apple.com/app/hulu-plus/id376510438','https://play.google.com/store/apps/details?id=com.hulu.plus','hulu','hulu','{"US"}'),
 (26,'Amazon Prime','sub','https://cdn.watchmode.com/provider_logos/prime_video_100px.png','http://itunes.apple.com/app/amazon-instant-video/id545519333','http://amazon.com/GetAndroidVideo','intent','aiv','{"AR","CH","CL","CO","EC","FR","MX","PA","PE","US","IE","GB","ES","DK","FI","SE","JP","IN","NZ","PH","ZA","BE","DE","HK","ID","MY","PT","TH","VN","RO","IL","KR","RU","IS","NO","PL","NL","SG","HU","BG","CZ","EE","GR","HR","LT","RS","TR","UA","BR","CA","AU","be","dk","fi","in","nl","no","se"}'),

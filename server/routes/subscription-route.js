@@ -1,6 +1,7 @@
 const express = require('express');
 const pgPool = require('../services/pg-pool');
 const subsTable = require('../services/subs-table');
+const servicesTable = require('../services/services-table');
 const authMiddleware = require('../middlewares/auth-middleware');
 
 const db = pgPool();
@@ -8,7 +9,7 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-// Get all users subscriptions
+// Get all user's subscriptions
 router.get('', (req, res, next) => {
   const { userId } = req.user;
 
@@ -17,15 +18,21 @@ router.get('', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// Get all possible streaming services
+router.get('/services', (req, res, next) => {
+  servicesTable.getAll(db)
+    .then(services => res.json(services))
+    .catch(err => next(err));
+});
+
 // Add new subscription
 router.post('', (req, res, next) => {
   const reqParams = JSON.parse(JSON.stringify(req.body));
   const checked = [
-    'serviceName',
+    'serviceId',
     'cost',
     'billingCycle',
-    'cycleStart',
-    'photoUrl'
+    'cycleStart'
   ];
   const { userId } = req.user;
 
@@ -36,15 +43,15 @@ router.post('', (req, res, next) => {
 });
 
 // Update user's subscription
-router.patch('/:subscriptionId', (req, res, next) => {
-  const subscriptionId = Number(req.params.subscriptionId);
+router.patch('/:subsId', (req, res, next) => {
+  const subsId = Number(req.params.subsId);
   const reqParams = JSON.parse(JSON.stringify(req.body));
   const paramNames = Object.keys(reqParams);
   const checked = [...paramNames];
   const { userId } = req.user;
 
   subsTable.isParamsValid(reqParams, checked);
-  subsTable.update(userId, subscriptionId, reqParams, db)
+  subsTable.update(userId, subsId, reqParams, db)
     .then(subs => res.json(subs))
     .catch(err => next(err));
 });

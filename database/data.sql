@@ -10,39 +10,35 @@ values (
 -- username: testuser, password: password
 
 insert into "subscriptions" (
-  "service_name",
+  "user_id",
+  "service_id",
   "is_active",
   "cost",
   "billing_cycle",
-  "cycle_start",
-  "photo_url",
-  "user_id"
+  "cycle_start"
 )
 values (
-  'Netflix',
+  1,
+  203,
   true,
   10.99,
   'monthly',
-  '2022-04-14',
-  'https://cdn.watchmode.com/provider_logos/netflix_100px.png',
-  1
+  '2022-04-14'
 );
 
 insert into "subscriptions" (
-  "service_name",
+  "user_id",
+  "service_id",
   "is_active",
   "cost",
   "billing_cycle",
-  "cycle_start",
-  "photo_url",
-  "user_id"
+  "cycle_start"
 )
 values (
-  'Hulu',
+  1,
+  157,
   false,
   13.99,
   'monthly',
-  '2022-04-14',
-  'https://cdn.watchmode.com/provider_logos/hulu_100px.png',
-  1
+  '2022-04-14'
 );
