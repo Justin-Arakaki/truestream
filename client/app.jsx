@@ -11,6 +11,8 @@ import NotFound from './pages/not-found';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import dgreenTheme from './components/dgreen-theme';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -67,8 +69,10 @@ export default class App extends React.Component {
     return (
       <AppContext.Provider value={contextValue}>
         <ThemeProvider theme={dgreenTheme}>
-          <CssBaseline enableColorScheme />
-          {this.renderPage()}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <CssBaseline enableColorScheme />
+            {this.renderPage()}
+          </LocalizationProvider>
         </ThemeProvider>
       </AppContext.Provider>
     );

@@ -3,8 +3,10 @@ import Redirect from '../components/redirect';
 import Subscriptions from '../components/subscriptions';
 import AppContext from '../lib/app-context';
 // Import MUI
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import {
+  Grid,
+  Container
+} from '@mui/material';
 
 export default class Dashboard extends React.Component {
   constructor(props) {

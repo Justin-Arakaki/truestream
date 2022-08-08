@@ -49,9 +49,14 @@ const dgreenTheme = createTheme({
       fontWeight: 200,
       fontSize: '1.175rem'
     },
+    h4: {
+      fontFamily: 'Roboto',
+      fontWeight: 400,
+      fontSize: '1.175rem'
+    },
     body1: {
       fontFamily: 'Roboto',
-      fontWeight: 500,
+      fontWeight: 400,
       fontSize: '1.125rem'
     },
     body2: {

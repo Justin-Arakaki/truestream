@@ -4,7 +4,7 @@ import SubsItem from './subs-item';
 import AppContext from '../lib/app-context';
 import LoadingScreen from './loading-screen';
 // Import MUI
-import Stack from '@mui/material/Stack';
+import { Stack } from '@mui/material';
 
 export default class Subscriptions extends React.Component {
   constructor(props) {
@@ -29,23 +29,21 @@ export default class Subscriptions extends React.Component {
       .then(result => {
         if (result.error) {
           console.error(result);
-          this.setState({ status: result.error });
         }
         this.setState({ subscriptions: result, loading: false });
-        console.log('state', this.state);
       });
   }
 
   render() {
     const { user } = this.context;
     const { subscriptions, loading } = this.state;
-    if (loading) {
-      return <LoadingScreen />;
-    }
+
+    if (!user) return <Redirect to="login" />;
+    if (loading) return <LoadingScreen />;
+
     const subsList = subscriptions.map(x =>
       <SubsItem key={x.subsId} subsInfo={x} />
     );
-    if (!user) return <Redirect to="login" />;
 
     return (
       <Stack spacing={1} sx={{ width: '100%' }}>
