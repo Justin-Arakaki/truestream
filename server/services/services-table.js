@@ -1,4 +1,3 @@
-const ClientError = require('../middlewares/client-error');
 const { servicesColumn } = require('../../database/servicesdb-info');
 
 function getAll(db) {

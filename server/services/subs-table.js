@@ -39,7 +39,15 @@ function add(userId, reqParams, db) {
       "${subsColumn.cycleStart}"
     )
     values (${varString})
-    returning *
+    returning
+      "${subsColumn.subsId}" as "subsId",
+      "${subsColumn.userId}" as "userId",
+      "${subsColumn.serviceId}" as "serviceId",
+      "${subsColumn.isActive}" as "isActive",
+      "${subsColumn.cost}" as "cost",
+      "${subsColumn.billingCycle}" as "billingCycle",
+      "${subsColumn.cycleStart}" as "cycleStart",
+      "${subsColumn.updatedAt}" as "updatedAt"
   `;
   const params = [
     userId,
@@ -90,7 +98,7 @@ function update(userId, subsId, reqParams, db) {
 
   return db.query(sql, params)
     .then(result => {
-      const subs = result.rows;
+      const [subs] = result.rows;
       if (!subs) {
         const errorMsg =
           `cannot find subscription with subscriptionId ${subsId}`;
