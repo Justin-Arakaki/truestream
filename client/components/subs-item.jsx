@@ -8,8 +8,7 @@ import {
   Avatar,
   Card,
   CardActionArea,
-  LinearProgress,
-  Dialog
+  LinearProgress
 } from '@mui/material';
 
 export default function SubsItem(props) {
