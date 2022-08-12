@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Redirect from './redirect';
 import SubsItem from './subs-item';
 import AppContext from '../lib/app-context';
@@ -6,17 +6,13 @@ import LoadingScreen from './loading-screen';
 // Import MUI
 import { Stack } from '@mui/material';
 
-export default class Subscriptions extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      subscriptions: null,
-      loading: true
-    };
-  }
+export default function Subscriptions(props) {
+  const { token, user } = useContext(AppContext);
 
-  componentDidMount() {
-    const { token } = this.context;
+  const [subscriptions, setSubscriptions] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
     const req = {
       method: 'GET',
       headers: {
@@ -30,26 +26,21 @@ export default class Subscriptions extends React.Component {
         if (result.error) {
           console.error(result);
         }
-        this.setState({ subscriptions: result, loading: false });
+        setSubscriptions(result);
+        setLoading(false);
       });
-  }
+  }, []);
 
-  render() {
-    const { user } = this.context;
-    const { subscriptions, loading } = this.state;
+  if (!user) return <Redirect to="login" />;
+  if (loading) return <LoadingScreen />;
 
-    if (!user) return <Redirect to="login" />;
-    if (loading) return <LoadingScreen />;
+  const subsList = subscriptions.map(x =>
+    <SubsItem key={x.subsId} subsInfo={x} />
+  );
 
-    const subsList = subscriptions.map(x =>
-      <SubsItem key={x.subsId} subsInfo={x} />
-    );
-
-    return (
-      <Stack spacing={1} sx={{ width: '100%' }}>
-        {subsList}
-      </Stack>
-    );
-  }
+  return (
+    <Stack spacing={1} sx={{ width: '100%' }}>
+      {subsList}
+    </Stack>
+  );
 }
-Subscriptions.contextType = AppContext;

@@ -1,41 +1,71 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import Redirect from '../components/redirect';
 import Subscriptions from '../components/subscriptions';
+import SubsForm from '../components/subs-form';
 import AppContext from '../lib/app-context';
 // Import MUI
 import {
   Grid,
-  Container
+  Container,
+  SpeedDial,
+  SpeedDialIcon,
+  SpeedDialAction
 } from '@mui/material';
+import {
+  LibraryAdd
+} from '@mui/icons-material';
 
-export default class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { pageName: '' };
-  }
+export default function Dashboard(props) {
+  const { user, route } = useContext(AppContext);
 
-  renderContent() {
-    const page = this.state.pageName;
-    switch (page) {
+  const [pageName, setPageName] = useState(route);
+
+  const [openFab, setOpenFab] = useState(false);
+  const handleOpenFab = () => setOpenFab(true);
+  const handleCloseFab = () => setOpenFab(false);
+
+  const [currentSubsInfo, setCurrentSubsInfo] = useState(null);
+
+  const actions = [
+    { icon: <LibraryAdd />, name: 'Add' }
+  ];
+
+  const renderContent = () => {
+    switch (pageName) {
       case 'subscriptions':
         return <Subscriptions />;
       default:
         return <Subscriptions />;
     }
-  }
+  };
 
-  render() {
-    const { user } = this.context;
+  if (!user) return <Redirect to="login" />;
 
-    if (!user) return <Redirect to="login" />;
-
-    return (
+  return (
+    <>
       <Container maxWidth="sm">
         <Grid container mt={2} spacing={1}>
-          {this.renderContent()}
+          {renderContent()}
         </Grid>
       </Container>
-    );
-  }
+      <SpeedDial
+        ariaLabel="Edit Menu"
+        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+        onClose={handleCloseFab}
+        onOpen={handleOpenFab}
+        open={openFab}
+      >
+        {actions.map(action =>
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            tooltipOpen
+            onClick={handleCloseFab}
+          />
+        )}
+      </SpeedDial>
+    </>
+  );
 }
-Dashboard.contextType = AppContext;
