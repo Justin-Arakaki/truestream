@@ -12,7 +12,7 @@ const MoneyFormat = React.forwardRef(function NumberFormatCustom(props, ref) {
         onChange({
           target: {
             name: props.name,
-            value: values.value
+            value: values.floatValue
           }
         });
       }}

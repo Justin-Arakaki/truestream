@@ -129,6 +129,26 @@ function isParamsValid(reqParams, checkArray) {
   }
 }
 
+function deleteSubs(userId, subsId, db) {
+  const sql = `
+    delete from "subscriptions"
+    where "${subsColumn.subsId}" = $1
+    returning "${subsColumn.subsId}" as "subsId"
+  `;
+  const params = [subsId];
+
+  return db.query(sql, params)
+    .then(result => {
+      const [subs] = result.rows;
+      if (!subs) {
+        const errorMsg =
+          `cannot find subscription with subscriptionId ${subsId}`;
+        throw new ClientError(404, errorMsg);
+      }
+      return subs;
+    });
+}
+
 // Private Helpers //
 
 function createVarString(startNum, length) {
@@ -146,3 +166,4 @@ exports.getAll = getAll;
 exports.add = add;
 exports.update = update;
 exports.isParamsValid = isParamsValid;
+exports.delete = deleteSubs;

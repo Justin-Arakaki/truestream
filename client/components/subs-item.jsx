@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import BillingCycle from '../lib/billing-cycle';
-import SubsForm from './subs-form';
 // Import MUI
 import {
   Typography,
@@ -10,60 +9,56 @@ import {
   CardActionArea,
   LinearProgress
 } from '@mui/material';
+import dayjs from 'dayjs';
 
 export default function SubsItem(props) {
-  const [subsInfo, setSubsInfo] = useState(props.subsInfo);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const {
+    serviceName,
+    serviceLogo,
+    cost,
+    billingCycle
+  } = props.subsInfo;
+  const cycleStart = dayjs(props.subsInfo.cycleStart).format('YYYY-MM-DD');
+  const cycle = new BillingCycle(cycleStart, billingCycle);
 
-  const cycle = new BillingCycle(subsInfo.cycleStart, subsInfo.billingCycle);
+  const handleClick = () => props.onClick({ ...props.subsInfo, cycleStart });
 
-  // Keep the <> component around SubsForm to avoid error
   return (
-    <>
-      <CardActionArea component="a" onClick={handleOpen}>
-        <Card sx={{ p: 2, display: 'flex', gap: 2 }}>
-          <Avatar
-            alt={subsInfo.serviceName}
-            src={subsInfo.serviceLogo}
-            sx={{ height: '3rem', width: '3rem' }}
-          />
-          <Box width="100%">
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '100%'
-              }}
-            >
-              <Typography variant="body1">
-                {subsInfo.serviceName}
-              </Typography>
-              <Typography variant="body1">
-                ${subsInfo.cost}
-              </Typography>
-            </Box>
-            <Typography variant="body2" color="text.secondary">
-              Billed {subsInfo.billingCycle}
+    <CardActionArea component="a" onClick={handleClick}>
+      <Card sx={{ p: 2, display: 'flex', gap: 2 }}>
+        <Avatar
+          alt={serviceName}
+          src={serviceLogo}
+          sx={{ height: '3rem', width: '3rem' }}
+        />
+        <Box width="100%">
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%'
+            }}
+          >
+            <Typography variant="body1">
+              {serviceName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {cycle.daysUntilPayment} days until next payment
+            <Typography variant="body1">
+              ${cost}
             </Typography>
-            <LinearProgress
-              variant="determinate"
-              value={cycle.progress}
-              sx={{ mt: 1 }}
-            />
           </Box>
-        </Card>
-      </CardActionArea>
-      <SubsForm
-        subsInfo={subsInfo}
-        onUpdate={setSubsInfo}
-        open={open}
-        onClose={handleClose}
-      />
-    </>
+          <Typography variant="body2" color="text.secondary">
+            Billed {billingCycle}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {cycle.daysUntilPayment} days until next payment
+          </Typography>
+          <LinearProgress
+            variant="determinate"
+            value={cycle.progress}
+            sx={{ mt: 1 }}
+          />
+        </Box>
+      </Card>
+    </CardActionArea>
   );
 }

@@ -47,11 +47,28 @@ router.patch('/:subsId', (req, res, next) => {
   const subsId = Number(req.params.subsId);
   const reqParams = JSON.parse(JSON.stringify(req.body));
   const paramNames = Object.keys(reqParams);
-  const checked = [...paramNames];
+  const checked = [
+    'serviceId',
+    'isActive',
+    'cost',
+    'billingCycle',
+    'cycleStart'
+  ];
   const { userId } = req.user;
 
   subsTable.isParamsValid(reqParams, checked);
   subsTable.update(userId, subsId, reqParams, db)
+    .then(subs => res.json(subs))
+    .catch(err => next(err));
+});
+
+// Delete user's subscription
+router.delete('/:subsId', (req, res, next) => {
+  const subsId = Number(req.params.subsId);
+  const { userId } = req.user;
+
+  subsTable.isParamsValid({ subsId }, ['subsId']);
+  subsTable.delete(userId, subsId, db)
     .then(subs => res.json(subs))
     .catch(err => next(err));
 });
