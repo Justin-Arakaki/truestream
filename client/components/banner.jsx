@@ -14,7 +14,7 @@ export default class Banner extends React.Component {
         mb='1rem'
       >
         <Typography variant="h1" component="h1" textAlign="center">
-          StreamSaver
+          Truestream
         </Typography>
         <Typography variant="h2" component="h2" textAlign="center" mt={2}>
           Like Truebill. Definitely worse.
