@@ -34,10 +34,17 @@ export default function SubsForm(props) {
     onSubmit: handleSubmit,
     onDelete: handleDelete
   } = props;
-
-  const serviceOptionIndex = serviceOptions
+  const serviceOptionIndex = serviceOptions && formValues.serviceName
     ? serviceOptions.findIndex(x => x.serviceName === formValues.serviceName)
     : null;
+  const currentService = serviceOptions && formValues.serviceName
+    ? serviceOptions[serviceOptionIndex]
+    : null;
+  console.log(serviceOptionIndex, currentService);
+
+  const [autoValue, setAutoValue] = useState(currentService);
+  const [autoInputValue, setAutoInputValue] = useState('');
+  useEffect(() => setAutoValue(currentService), [currentService]);
 
   const renderActionButtons = () => {
     if (!formValues.subsId) {
@@ -87,12 +94,17 @@ export default function SubsForm(props) {
           <Autocomplete
             id="streaming-service"
             name="streaming-service"
-            options={serviceOptions}
-            defaultValue={serviceOptions[serviceOptionIndex]}
-            getOptionLabel={option => option.serviceName}
+            value={autoValue}
             onChange={(event, newValue) => {
+              setAutoValue(newValue);
               handleChange({ serviceId: newValue.serviceId });
             }}
+            inputValue={autoInputValue}
+            onInputChange={(event, newInputValue) => {
+              setAutoInputValue(newInputValue);
+            }}
+            options={serviceOptions}
+            getOptionLabel={option => option.serviceName}
             renderInput={params => {
               return (
                 <TextField

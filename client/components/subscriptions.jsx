@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 
 export default function Subscriptions(props) {
   const { token, user } = useContext(AppContext);
-  const { openSubsForm, handleCloseSubsForm, handleOpenSubsForm } = props;
+  const { openSubsForm, setOpenSubsForm } = props;
   const defaultSubsInfo = {
     subsId: null,
     serviceId: null,
@@ -27,6 +27,11 @@ export default function Subscriptions(props) {
     cycleStart: dayjs().format('YYYY-MM-DD'),
     serviceName: null
   };
+  const handleOpenSubsForm = () => setOpenSubsForm(true);
+  const handleCloseSubsForm = () => {
+    setOpenSubsForm(false);
+    resetFormValues();
+  };
 
   const [subscriptions, setSubscriptions] = useState(null);
   const [allServices, setAllServices] = useState(null);
@@ -35,8 +40,7 @@ export default function Subscriptions(props) {
     handleChange(subsInfo);
     handleOpenSubsForm();
   };
-
-  console.log('FORMVALUES', formValues);
+  const resetFormValues = () => handleChange({ ...defaultSubsInfo });
 
   const [loadingSubs, setLoadingSubs] = useState(true);
   const [loadingAllServices, setLoadingAllServices] = useState(true);
@@ -50,7 +54,7 @@ export default function Subscriptions(props) {
     }
     handleCloseSubsForm();
     setLoadingSubs(true);
-    handleChange({ ...defaultSubsInfo });
+    resetFormValues();
   };
 
   const handleDelete = () => {
@@ -58,7 +62,7 @@ export default function Subscriptions(props) {
     deleteSubs(token, formValues.subsId);
     handleCloseSubsForm();
     setLoadingSubs(true);
-    handleChange({ ...defaultSubsInfo });
+    resetFormValues();
   };
 
   // TODO: Have a race! - put a set timeout on second one to delay state change
