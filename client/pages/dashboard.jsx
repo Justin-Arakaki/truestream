@@ -17,43 +17,27 @@ import dayjs from 'dayjs';
 
 export default function Dashboard(props) {
   const { user, route } = useContext(AppContext);
-  const defaultSubsInfo = {
-    serviceId: 203,
-    isActive: true,
-    cost: 9.99,
-    billingCycle: 'monthly',
-    cycleStart: dayjs().format('YYYY-MM-DD'),
-    serviceName: 'Netflix'
-  };
-  // TODO: Move this into SubsInfo
 
   const [openFab, setOpenFab] = useState(false);
   const handleClickFab = () => setOpenFab(!openFab);
   const handleCloseFab = () => setOpenFab(false);
-
-  const [reloadSubs, setReloadSubs] = useState(false);
-
   const [openSubsForm, setOpenSubsForm] = useState(false);
-  const handleOpenSubsForm = () => setOpenSubsForm(true);
-  const handleCloseSubsForm = () => setOpenSubsForm(false);
 
   const actions = [
     {
       icon: <LibraryAdd />,
       name: 'Add',
-      action: () => handleOpenSubsForm()
+      action: () => setOpenSubsForm(true)
     }
   ];
 
-  // TODO: Janky solution fix soon
   const renderContent = () => {
     switch (route.path) {
       default:
         return (
           <Subscriptions
-            handleOpenSubsForm={handleOpenSubsForm}
-            handleCloseSubsForm={handleCloseSubsForm}
             openSubsForm={openSubsForm}
+            setOpenSubsForm={setOpenSubsForm}
           />
         );
     }
