@@ -8,20 +8,33 @@ import {
   Container,
   SpeedDial,
   SpeedDialIcon,
-  SpeedDialAction
+  SpeedDialAction,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Button
 } from '@mui/material';
 import {
-  LibraryAdd
+  LibraryAdd,
+  Menu
 } from '@mui/icons-material';
 import dayjs from 'dayjs';
 
 export default function Dashboard(props) {
-  const { user, route } = useContext(AppContext);
+  const { user, handleSignOut } = useContext(AppContext);
+
+  if (!user) return <Redirect to="login" />;
 
   const [openFab, setOpenFab] = useState(false);
   const handleClickFab = () => setOpenFab(!openFab);
   const handleCloseFab = () => setOpenFab(false);
   const [openSubsForm, setOpenSubsForm] = useState(false);
+  const [contentType, setContentType] = useState('Subscriptions');
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const handleOpenDrawer = () => setOpenDrawer(true);
+  const handleCloseDrawer = () => setOpenDrawer(true);
+  // TODO: Create AppDrawer
 
   const actions = [
     {
@@ -32,7 +45,7 @@ export default function Dashboard(props) {
   ];
 
   const renderContent = () => {
-    switch (route.path) {
+    switch (contentType) {
       default:
         return (
           <Subscriptions
@@ -43,16 +56,29 @@ export default function Dashboard(props) {
     }
   };
 
-  if (!user) return <Redirect to="login" />;
-
   return (
-    <Grid container mt={2} spacing={1}>
-      <Container maxWidth="sm">
+    <Grid container spacing={1}>
+      <AppBar position="sticky">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <Menu />
+          </IconButton>
+          <Typography variant="h2" sx={{ flexGrow: 1 }}>{contentType}</Typography>
+          <Button color="inherit" onClick={handleSignOut}>LOGOUT</Button>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="sm" sx={{ position: 'relative', top: '1rem' }}>
         {renderContent()}
       </Container>
       <SpeedDial
         ariaLabel="Edit Menu"
-        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
         onClick={handleClickFab}
         open={openFab}
