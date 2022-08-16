@@ -40,7 +40,6 @@ export default function SubsForm(props) {
   const currentService = serviceOptions && formValues.serviceName
     ? serviceOptions[serviceOptionIndex]
     : null;
-  console.log(serviceOptionIndex, currentService);
 
   const [autoValue, setAutoValue] = useState(currentService);
   const [autoInputValue, setAutoInputValue] = useState('');
