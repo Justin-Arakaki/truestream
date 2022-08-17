@@ -4,9 +4,14 @@ const authRoute = require('./routes/auth-route');
 const subscriptionRoute = require('./routes/subscription-route');
 const allMiddlewares = require('./middlewares/all-middlewares');
 const errorMiddleware = require('./middlewares/error-middleware');
+const path = require('path');
 const app = express();
 
 allMiddlewares(app);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 app.use('/api/auth', authRoute);
 
