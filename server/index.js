@@ -14,7 +14,11 @@ app.use('/api/subscriptions', subscriptionRoute);
 
 app.use(errorMiddleware); // Must be at end
 
-app.listen(process.env.PORT, () => {
+let port = process.env.PORT;
+if (port === null || port === '') {
+  port = 8000;
+}
+app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`express server listening on port ${process.env.PORT}`);
 });
