@@ -56,6 +56,7 @@ export default class AuthForm extends React.Component {
       .then(res => res.json())
       .then(result => {
         if (result.error) {
+          console.log('HEREHERE');
           console.error(result);
           this.setState({ status: result.error });
           return;
