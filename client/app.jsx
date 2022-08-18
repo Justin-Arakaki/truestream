@@ -40,6 +40,7 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
+    console.log(token);
     window.localStorage.setItem('your-token', token);
     this.setState({ user, token });
   }
