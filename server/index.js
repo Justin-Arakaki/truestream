@@ -6,12 +6,11 @@ const allMiddlewares = require('./middlewares/all-middlewares');
 const errorMiddleware = require('./middlewares/error-middleware');
 const path = require('path');
 const app = express();
+const publicPath = path.join(__dirname, 'public');
 
 allMiddlewares(app);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
-});
+app.use(express.static(publicPath));
 
 app.use('/api/auth', authRoute);
 
@@ -25,5 +24,5 @@ if (port === null || port === '') {
 }
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`express server listening on port ${process.env.PORT}`);
+  console.log(`express server listening on port ${port}`);
 });
