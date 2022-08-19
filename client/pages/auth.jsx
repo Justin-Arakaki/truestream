@@ -6,8 +6,6 @@ import AppContext from '../lib/app-context';
 
 export default class AuthPage extends React.Component {
   render() {
-    console.log('INSIDE AUTH');
-
     const { user, handleSignIn } = this.context;
 
     if (user) return <Redirect to="dashboard" />;

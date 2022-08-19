@@ -19,10 +19,6 @@ router.post('/sign-up', (req, res, next) => {
 // Authorize user
 router.post('/sign-in', (req, res, next) => {
   const { username, password } = req.body;
-  console.log('sign-in', {
-    username,
-    password
-  });
 
   userTable.isParamsValid(username, password);
   userTable.isPasswordCorrect(username, password, db)

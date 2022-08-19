@@ -6,7 +6,8 @@ import AppContext from './lib/app-context';
 // Import Pages
 import Auth from './pages/auth';
 import Dashboard from './pages/dashboard';
-import NotFound from './pages/not-found';
+// TODO: Make this
+// import NotFound from './pages/not-found';
 // Import MUI
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -40,7 +41,6 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
-    console.log(token);
     window.localStorage.setItem('your-token', token);
     this.setState({ user, token });
   }

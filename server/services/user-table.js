@@ -60,11 +60,6 @@ function isPasswordCorrect(username, password, db) {
     where "${usersColumn.username}" = $1
   `;
   const params = [username];
-  console.log('isPasswordCorrect', {
-    username,
-    password,
-    param: usersColumn.userId
-  });
 
   return db.query(sql, params)
     .then(result => {
@@ -84,12 +79,6 @@ function isPasswordCorrect(username, password, db) {
 }
 
 function createToken(payload) {
-  console.log('createToken', {
-    secret: process.env.TOKEN_SECRET,
-    payload,
-    process,
-    env: process.env
-  });
   const token = jwt.sign(payload, process.env.TOKEN_SECRET);
   return token;
 }
