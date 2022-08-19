@@ -87,7 +87,7 @@ function createToken(payload) {
     secret: process.env.TOKEN_SECRET,
     payload
   });
-  const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+  const token = jwt.sign(payload, process, process.env.TOKEN_SECRET);
   return token;
 }
 
