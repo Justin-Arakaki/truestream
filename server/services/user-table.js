@@ -1,3 +1,4 @@
+require('dotenv/config');
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const ClientError = require('../middlewares/client-error');
