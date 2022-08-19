@@ -85,9 +85,11 @@ function isPasswordCorrect(username, password, db) {
 function createToken(payload) {
   console.log('createToken', {
     secret: process.env.TOKEN_SECRET,
-    payload
+    payload,
+    process,
+    env: process.env
   });
-  const token = jwt.sign(payload, process, process.env.TOKEN_SECRET);
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET);
   return token;
 }
 
