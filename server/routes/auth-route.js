@@ -8,10 +8,11 @@ const router = express.Router();
 // Add new user
 router.post('/sign-up', (req, res, next) => {
   const { username, password } = req.body;
+  const lowercaseUsername = username.toLowerCase();
 
-  userTable.isParamsValid(username, password);
-  userTable.isUsernameTaken(username, db)
-    .then(() => userTable.add(username, password, db))
+  userTable.isParamsValid(lowercaseUsername, password);
+  userTable.isUsernameTaken(lowercaseUsername, db)
+    .then(() => userTable.add(lowercaseUsername, password, db))
     .then(user => res.status(201).json(user))
     .catch(err => next(err));
 });
@@ -19,11 +20,12 @@ router.post('/sign-up', (req, res, next) => {
 // Authorize user
 router.post('/sign-in', (req, res, next) => {
   const { username, password } = req.body;
+  const lowercaseUsername = username.toLowerCase();
 
-  userTable.isParamsValid(username, password);
-  userTable.isPasswordCorrect(username, password, db)
+  userTable.isParamsValid(lowercaseUsername, password);
+  userTable.isPasswordCorrect(lowercaseUsername, password, db)
     .then(user => {
-      const payload = { userId: user.userId, username };
+      const payload = { userId: user.userId, lowercaseUsername };
       const token = userTable.createToken(payload);
 
       res.json({ user: payload, token });
