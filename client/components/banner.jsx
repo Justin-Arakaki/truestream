@@ -8,8 +8,10 @@ export default class Banner extends React.Component {
     return (
       <Box
         item bgcolor="primary.main"
+        display="flex"
+        flexDirection="column"
         justifyContent="center"
-        py='6rem'
+        height='40vh'
         px='1rem'
         mb='1rem'
       >
