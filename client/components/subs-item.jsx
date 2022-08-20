@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import BillingCycle from '../lib/billing-cycle';
 // Import MUI
 import {
@@ -16,11 +16,18 @@ export default function SubsItem(props) {
     serviceName,
     serviceLogo,
     cost,
-    billingCycle
+    billingCycle,
+    isActive
   } = props.subsInfo;
   const cycleStart = dayjs(props.subsInfo.cycleStart).format('YYYY-MM-DD');
   const cycle = new BillingCycle(cycleStart, billingCycle);
 
+  const costFormat = {
+    sx: {
+      color: isActive ? 'text.primary' : 'text.secondary',
+      textDecoration: isActive ? 'none' : 'line-through'
+    }
+  };
   const handleClick = () => props.onClick({ ...props.subsInfo, cycleStart });
 
   return (
@@ -42,7 +49,7 @@ export default function SubsItem(props) {
             <Typography variant="body1">
               {serviceName}
             </Typography>
-            <Typography variant="body1">
+            <Typography {...costFormat} variant="body1">
               ${cost}
             </Typography>
           </Box>

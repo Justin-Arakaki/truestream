@@ -1,11 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import AppContext from '../lib/app-context';
+import React, { useState, useEffect } from 'react';
 import LoadingScreen from './loading-screen';
 import MoneyFormat from './money-format';
-import updateSubs from '../api/update-subs';
-import addSubs from '../api/add-subs';
-import deleteSubs from '../api/delete-subs';
-import getServices from '../api/get-services';
 import {
   FormControl,
   Stack,
@@ -21,7 +16,6 @@ import {
   Switch,
   Button
 } from '@mui/material';
-import dayjs from 'dayjs';
 
 export default function SubsForm(props) {
   const {
@@ -155,7 +149,9 @@ export default function SubsForm(props) {
                 id="is-active"
                 name="isActive"
                 checked={formValues.isActive}
-                onChange={handleChange}
+                onChange={event => {
+                  handleChange({ isActive: event.target.checked });
+                }}
               />
             }
             label="Toggle Subscription"
