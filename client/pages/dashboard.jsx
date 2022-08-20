@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import Redirect from '../components/redirect';
 import Subscriptions from '../components/subscriptions';
 import AppContext from '../lib/app-context';
+import Offset from '../components/offset';
 // Import MUI
 import {
   Grid,
@@ -19,7 +20,6 @@ import {
   LibraryAdd,
   Menu
 } from '@mui/icons-material';
-import dayjs from 'dayjs';
 
 export default function Dashboard(props) {
   const { user, handleSignOut } = useContext(AppContext);
@@ -30,11 +30,15 @@ export default function Dashboard(props) {
   const handleClickFab = () => setOpenFab(!openFab);
   const handleCloseFab = () => setOpenFab(false);
   const [openSubsForm, setOpenSubsForm] = useState(false);
-  const [contentType, setContentType] = useState('Subscriptions');
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const handleOpenDrawer = () => setOpenDrawer(true);
-  const handleCloseDrawer = () => setOpenDrawer(true);
+
+  // TODO: use state when AppDrawer is finished
+  const contentType = 'Subscriptions';
+  // const [contentType, setContentType] = useState('Subscriptions');
+
   // TODO: Create AppDrawer
+  // const [openDrawer, setOpenDrawer] = useState(false);
+  // const handleOpenDrawer = () => setOpenDrawer(true);
+  // const handleCloseDrawer = () => setOpenDrawer(true);
 
   const actions = [
     {
@@ -58,7 +62,7 @@ export default function Dashboard(props) {
 
   return (
     <Grid container spacing={1}>
-      <AppBar position="sticky">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"
@@ -73,6 +77,7 @@ export default function Dashboard(props) {
           <Button color="inherit" onClick={handleSignOut}>LOGOUT</Button>
         </Toolbar>
       </AppBar>
+      <Offset />
       <Container maxWidth="sm" sx={{ position: 'relative', top: '1rem' }}>
         {renderContent()}
       </Container>
