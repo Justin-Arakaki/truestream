@@ -89,7 +89,7 @@ export default function Subscriptions(props) {
 
   return (
     <>
-      <Stack spacing={1} sx={{ width: '100%' }}>
+      <Stack mb={10} spacing={1} sx={{ width: '100%' }}>
         {subsList}
       </Stack>
       <SubsForm
