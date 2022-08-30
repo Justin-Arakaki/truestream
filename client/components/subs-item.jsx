@@ -50,7 +50,7 @@ export default function SubsItem(props) {
               {serviceName}
             </Typography>
             <Typography {...costFormat} variant="body1">
-              ${cost}
+              ${cost.toFixed(2)}
             </Typography>
           </Box>
           <Typography variant="body2" color="text.secondary">

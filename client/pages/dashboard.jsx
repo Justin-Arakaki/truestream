@@ -78,7 +78,7 @@ export default function Dashboard(props) {
         </Toolbar>
       </AppBar>
       <Offset />
-      <Container maxWidth="sm" sx={{ position: 'relative', top: '1rem' }}>
+      <Container maxWidth="sm" sx={{ position: 'relative', top: '2rem' }}>
         {renderContent()}
       </Container>
       <SpeedDial
