@@ -3,8 +3,10 @@ import Redirect from './redirect';
 import SubsItem from './subs-item';
 import AppContext from '../lib/app-context';
 import SubsForm from './subs-form';
+import SubsTalley from './subs-talley';
 import LoadingScreen from './loading-screen';
 import useForm from '../hooks/use-form';
+import calculateBilling from '../lib/calculate-billing';
 // import API
 import getSubs from '../api/get-subs';
 import getServices from '../api/get-services';
@@ -36,6 +38,10 @@ export default function Subscriptions(props) {
   const [subscriptions, setSubscriptions] = useState(null);
   const [allServices, setAllServices] = useState(null);
   const [formValues, handleChange] = useForm({ ...defaultSubsInfo });
+  const [billingInfo, setBillingInfo] = useState({
+    totalCost: 0,
+    totalSavings: 0
+  });
   const handleClickSubs = subsInfo => {
     handleChange(subsInfo);
     handleOpenSubsForm();
@@ -70,6 +76,7 @@ export default function Subscriptions(props) {
     getSubs(token).then(result => {
       setSubscriptions(result);
       setLoadingSubs(false);
+      setBillingInfo(calculateBilling(result));
     });
   }, [loadingSubs]);
 
@@ -89,9 +96,10 @@ export default function Subscriptions(props) {
 
   return (
     <>
-      <Stack mb={10} spacing={1} sx={{ width: '100%' }}>
+      <Stack mb={14} spacing={1} sx={{ width: '100%' }}>
         {subsList}
       </Stack>
+      <SubsTalley billingInfo={{ ...billingInfo }} />
       <SubsForm
         formValues={formValues}
         serviceOptions={allServices}

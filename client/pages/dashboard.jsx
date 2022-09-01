@@ -12,13 +12,11 @@ import {
   SpeedDialAction,
   AppBar,
   Toolbar,
-  IconButton,
   Typography,
   Button
 } from '@mui/material';
 import {
-  LibraryAdd,
-  Menu
+  LibraryAdd
 } from '@mui/icons-material';
 
 export default function Dashboard(props) {
@@ -64,7 +62,7 @@ export default function Dashboard(props) {
     <Grid container spacing={1}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -72,7 +70,7 @@ export default function Dashboard(props) {
             sx={{ mr: 2 }}
           >
             <Menu />
-          </IconButton>
+          </IconButton> */}
           <Typography variant="h2" sx={{ flexGrow: 1 }}>{contentType}</Typography>
           <Button color="inherit" onClick={handleSignOut}>LOGOUT</Button>
         </Toolbar>
