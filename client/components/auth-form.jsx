@@ -78,7 +78,7 @@ export default class AuthForm extends React.Component {
       </Typography>;
     }
     return (
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
         <Paper>
           <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mx: 5 }}>
             <Tabs
