@@ -1,6 +1,6 @@
 # Truestream
 
-Link --> https://justin-arakaki.github.io/anicritic/
+Link --> https://truestream.herokuapp.com/
 
 A web application for frugal stream watchers who want to track their streaming subscription spending.
 
