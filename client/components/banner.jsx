@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 
 export default class Banner extends React.Component {
   render() {
-    // idk why pt doesn't work here
     return (
       <Box
         item bgcolor="primary.main"

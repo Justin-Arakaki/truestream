@@ -29,14 +29,8 @@ export default function Dashboard(props) {
   const handleCloseFab = () => setOpenFab(false);
   const [openSubsForm, setOpenSubsForm] = useState(false);
 
-  // TODO: use state when AppDrawer is finished
+  // TODO: Create Appdrawer
   const contentType = 'Subscriptions';
-  // const [contentType, setContentType] = useState('Subscriptions');
-
-  // TODO: Create AppDrawer
-  // const [openDrawer, setOpenDrawer] = useState(false);
-  // const handleOpenDrawer = () => setOpenDrawer(true);
-  // const handleCloseDrawer = () => setOpenDrawer(true);
 
   const actions = [
     {
