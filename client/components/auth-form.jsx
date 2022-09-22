@@ -80,7 +80,7 @@ export default class AuthForm extends React.Component {
     return (
       <Container maxWidth="sm">
         <Paper>
-          <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mx: 5 }}>
+          <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mx: 5, pb: 3 }}>
             <Tabs
               onChange={this.handleSwitch}
               value={this.state.action}
@@ -123,6 +123,14 @@ export default class AuthForm extends React.Component {
               sx={{ mt: 5, mb: 3 }}>
               {this.state.button}
             </Button>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Typography color="text.secondary">
+                -- Demo Account --
+              </Typography>
+              <Typography color="text.secondary">
+                Username: testuser, Password: password
+              </Typography>
+            </Box>
           </Box>
         </Paper>
       </Container>
