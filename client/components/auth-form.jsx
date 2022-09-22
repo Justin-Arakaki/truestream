@@ -128,7 +128,10 @@ export default class AuthForm extends React.Component {
                 -- Demo Account --
               </Typography>
               <Typography color="text.secondary">
-                Username: testuser, Password: password
+                Username: testuser
+              </Typography>
+              <Typography color="text.secondary">
+                Password: password
               </Typography>
             </Box>
           </Box>
