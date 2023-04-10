@@ -11,6 +11,7 @@
     "dev:client": "webpack serve --mode=development",
     "dev:server": "nodemon server/index.js",
     "db:import": "bash scripts/db-import.sh",
+    "db:railway": "bash scripts/db-import-railway.sh",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -52,8 +53,5 @@
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
-  },
-  "engines": {
-    "node": "16.x"
   }
 }
